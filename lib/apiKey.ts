@@ -1,16 +1,18 @@
 import { supabase } from './supabase';
 import { randomBytes } from 'crypto';
 
-export function generateApiKey(): string {
-  return 'ef_' + randomBytes(24).toString('hex');
-}
-
 export async function validateApiKey(apiKey: string) {
-  const { data } = await supabase
-    .from('api_keys')
-    .select('company_id')
-    .eq('key', apiKey)
+  const { data, error } = await supabase
+    .from('companies')
+    .select('id')
+    .eq('api_key', apiKey)
     .single();
 
-  return data?.company_id || null;
+  if (error || !data) return null;
+  return data.id;
+}
+
+export function generateApiKey() {
+  // Generates a secure random API key prefixed with ef_
+  return `ef_${randomBytes(24).toString('hex')}`;
 }

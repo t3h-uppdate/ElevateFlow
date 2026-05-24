@@ -14,22 +14,32 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      toast.error('Inloggning misslyckades', {
-        description: error.message,
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-    } else {
+
+      if (error) {
+        toast.error('Inloggning misslyckades', {
+          description: error.message === 'Invalid login credentials' 
+            ? 'Felaktig e-postadress eller lösenord.' 
+            : error.message,
+        });
+        setLoading(false);
+        return;
+      }
+
       toast.success('Välkommen!');
+      router.refresh();
       router.push('/dashboard');
+    } catch (err) {
+      toast.error('Ett oväntat fel uppstod');
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
@@ -43,21 +53,25 @@ export default function Login() {
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1.5">E-post</label>
+            <label htmlFor="email" className="block text-sm font-medium mb-1.5">E-post</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               className="w-full border p-3 rounded-2xl"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1.5">Lösenord</label>
+            <label htmlFor="password" className="block text-sm font-medium mb-1.5">Lösenord</label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               className="w-full border p-3 rounded-2xl"
               required
             />
