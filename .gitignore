@@ -1,4 +1,8 @@
+.next/
 .next
+next
+next/
+/workspaces/ElevateFlow/.next
 node_modules
 
 .env
