@@ -1,4 +1,11 @@
 {
+  "name": "elevateflow",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
@@ -8,8 +15,16 @@
     "clsx": "^2.1.1",
     "inngest": "^4.4.0",
     "lucide-react": "^1.16.0",
+    "next": "^15.3.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.6.0",
     "tailwindcss-animate": "^1.0.7"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
   }
 }
